@@ -2,4 +2,4 @@
 vendor
 .phpunit.cache
 test-results
-/.cache/composer/.htaccess
+.cache
