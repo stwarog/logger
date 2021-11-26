@@ -11,9 +11,9 @@ use const DIRECTORY_SEPARATOR;
 
 final class DefaultHandlerFactory implements HandlerFactory
 {
-    private Config $config;
+    private ConfigInterface $config;
 
-    public function __construct(Config $config)
+    public function __construct(ConfigInterface $config)
     {
         $this->config = $config;
     }

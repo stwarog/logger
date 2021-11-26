@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Factory\Monolog;
 
-use Efficio\Logger\Factory\Monolog\Config;
+use Efficio\Logger\Factory\Monolog\ConfigInterface;
 use Efficio\Logger\Factory\Monolog\LoggerFactory;
 use Monolog\Logger as MonologLogger;
 use PHPUnit\Framework\TestCase;
@@ -14,7 +14,7 @@ final class LoggerFactoryTest extends TestCase
 {
     public function testConstructor(): void
     {
-        $config = $this->createStub(Config::class);
+        $config = $this->createStub(ConfigInterface::class);
         $config->method('getLevel')->willReturn('DEBUG');
         $sut = new LoggerFactory($config);
         $this->assertInstanceOf(LoggerFactory::class, $sut);
@@ -23,7 +23,7 @@ final class LoggerFactoryTest extends TestCase
     public function testCreateMonologInstance(): void
     {
         // Given factory
-        $config = $this->createStub(Config::class);
+        $config = $this->createStub(ConfigInterface::class);
         $config->method('getLevel')->willReturn('DEBUG');
         $sut = new LoggerFactory($config);
 

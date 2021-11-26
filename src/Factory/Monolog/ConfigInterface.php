@@ -2,7 +2,7 @@
 
 namespace Efficio\Logger\Factory\Monolog;
 
-interface Config
+interface ConfigInterface
 {
     /**
      * @see \Monolog\Logger constants:
