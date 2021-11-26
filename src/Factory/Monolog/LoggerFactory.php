@@ -14,7 +14,7 @@ final class LoggerFactory implements FactoryInterface
 {
     private const LOGGER_NAME = 'file-logger';
 
-    private Config $config;
+    private ConfigInterface $config;
 
     /** @var HandlerInterface[] */
     private array $handlers;
@@ -22,7 +22,7 @@ final class LoggerFactory implements FactoryInterface
     private ?DateTimeZone $timezone;
 
     public function __construct(
-        Config $config,
+        ConfigInterface $config,
         ?HandlerFactory $handlerFactory = null,
         ?DateTimeZone $timezone = null
     ) {

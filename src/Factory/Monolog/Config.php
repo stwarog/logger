@@ -1,34 +1,45 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Efficio\Logger\Factory\Monolog;
 
-interface Config
+final class Config implements ConfigInterface
 {
-    /**
-     * @see \Monolog\Logger constants:
-     * 100|200|250|300|400|500|550|600|'ALERT'|'alert'|'CRITICAL'|'critical'|'DEBUG'|'debug'|'EMERGENCY'
-     * |'emergency'|'ERROR'|'error'|'INFO'|'info'|'NOTICE'|'notice'|'WARNING'|'warning'
-     *
-     * @return string
-     */
-    public function getLevel(): string;
+    private string $path;
+    private string $fileName;
+    private int $permission;
+    private string $level;
 
-    /**
-     * An absolute path where to store the logs output.
-     * @return string
-     */
-    public function getPath(): string;
+    public function __construct(
+        string $path,
+        string $fileName = 'app.txt',
+        int $permission = 0777,
+        string $level = 'DEBUG'
+    ) {
+        $this->path = $path;
+        $this->fileName = $fileName;
+        $this->permission = $permission;
+        $this->level = $level;
+    }
 
-    /**
-     * Generated log file e.g. app.txt
-     * @return string
-     */
-    public function getFileName(): string;
+    public function getLevel(): string
+    {
+        return $this->level;
+    }
 
-    /**
-     * todo: clarify purpose of this
-     * must be writable, 0775 e.g.
-     * @return int
-     */
-    public function getFilePermission(): int;
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    public function getFileName(): string
+    {
+        return $this->fileName;
+    }
+
+    public function getFilePermission(): int
+    {
+        return $this->permission;
+    }
 }
