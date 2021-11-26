@@ -1,0 +1,45 @@
+{
+    "name": "efficio/logger",
+    "description": "Collection of commonly used logger PSR implementation",
+    "type": "library",
+    "require": {
+        "php": "7.4.* || 8.*",
+        "monolog/monolog": "^2.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "phpstan/phpstan": "^0.12.85",
+        "phpstan/phpstan-phpunit": "^0.12.18",
+        "squizlabs/php_codesniffer": "*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sebastian Twaróg",
+            "email": "contact@stwarog.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Efficio\\Logger\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "phpunit": "./vendor/bin/phpunit --testdox",
+        "tests:unit": "@phpunit -c phpunit.xml",
+        "phpstan": "php -d memory_limit=400M vendor/bin/phpstan analyse -c phpstan.neon --level=max",
+        "phpcs": "./vendor/bin/phpcs --report=full --standard=PSR12 ./src",
+        "phpcs:fix": "./vendor/bin/phpcbf --standard=PSR12 ./src",
+        "check": [
+            "@phpcs",
+            "@phpstan",
+            "@tests:unit"
+        ]
+    },
+    "minimum-stability": "stable"
+}
