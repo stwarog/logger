@@ -21,3 +21,6 @@ build:
 stop:
 	docker-compose down -v --remove-orphans
 	docker network prune -f
+
+install:
+	docker-compose run --rm composer remove facile-it/sentry-psr-log --ignore-platform-reqs

@@ -4,125 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "160e36880a50c075ebc047fe04f2f3dd",
+    "content-hash": "a0f14e90602ca32b0cdad301145fe881",
     "packages": [
-        {
-            "name": "facile-it/sentry-common",
-            "version": "0.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/facile-it/sentry-common.git",
-                "reference": "9f2646e6dcaa45e83bc4b893129a0940c9a7a500"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/facile-it/sentry-common/zipball/9f2646e6dcaa45e83bc4b893129a0940c9a7a500",
-                "reference": "9f2646e6dcaa45e83bc4b893129a0940c9a7a500",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.0",
-                "sentry/sentry": "^1.7"
-            },
-            "require-dev": {
-                "facile-it/facile-coding-standard": "dev-composer-plugin",
-                "phpunit/phpunit": "^6.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Facile\\Sentry\\Common\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Thomas Vargiu",
-                    "email": "thomas.vargiu@facile.it"
-                }
-            ],
-            "description": "Sentry common library",
-            "homepage": "https://github.com/facile-it/sentry-common",
-            "keywords": [
-                "log",
-                "logs",
-                "raven",
-                "sentry"
-            ],
-            "support": {
-                "issues": "https://github.com/facile-it/sentry-common/issues",
-                "source": "https://github.com/facile-it/sentry-common/tree/master"
-            },
-            "abandoned": "sentry/sentry",
-            "time": "2017-06-30T12:52:20+00:00"
-        },
-        {
-            "name": "facile-it/sentry-psr-log",
-            "version": "2.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/facile-it/sentry-psr-log.git",
-                "reference": "a4eaa49559c5e60419abda4b28c25bde796bfac7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/facile-it/sentry-psr-log/zipball/a4eaa49559c5e60419abda4b28c25bde796bfac7",
-                "reference": "a4eaa49559c5e60419abda4b28c25bde796bfac7",
-                "shasum": ""
-            },
-            "require": {
-                "facile-it/sentry-common": "^0.1.1 || ^0.2.0",
-                "php": "^7.0",
-                "psr/log": "^1.0",
-                "sentry/sentry": "^1.7"
-            },
-            "provide": {
-                "psr/log-implementation": "1.0.0"
-            },
-            "require-dev": {
-                "facile-it/facile-coding-standard": "dev-composer-plugin",
-                "phpunit/phpunit": "^6.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Facile\\Sentry\\Log\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Thomas Vargiu",
-                    "email": "thomas.vargiu@facile.it"
-                }
-            ],
-            "description": "PSR Logger for Sentry",
-            "homepage": "https://github.com/facile-it/sentry-psr-log",
-            "keywords": [
-                "PSR3",
-                "error",
-                "errors",
-                "exception",
-                "exceptions",
-                "log",
-                "logs",
-                "psr",
-                "raven",
-                "sentry"
-            ],
-            "support": {
-                "issues": "https://github.com/facile-it/sentry-psr-log/issues",
-                "source": "https://github.com/facile-it/sentry-psr-log/tree/master"
-            },
-            "abandoned": "sentry/sentry",
-            "time": "2017-06-30T12:54:40+00:00"
-        },
         {
             "name": "monolog/monolog",
             "version": "2.3.5",
@@ -324,74 +207,6 @@
                 "source": "https://github.com/php-fig/log/tree/1.1.4"
             },
             "time": "2021-05-03T11:20:27+00:00"
-        },
-        {
-            "name": "sentry/sentry",
-            "version": "1.11.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "159eeaa02bb2ef8a8ec669f3c88e4bff7e6a7ffe"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/159eeaa02bb2ef8a8ec669f3c88e4bff7e6a7ffe",
-                "reference": "159eeaa02bb2ef8a8ec669f3c88e4bff7e6a7ffe",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "php": "^5.3|^7.0"
-            },
-            "conflict": {
-                "raven/raven": "*"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^1.8.0",
-                "monolog/monolog": "^1.0",
-                "phpunit/phpunit": "^4.8.35 || ^5.7"
-            },
-            "suggest": {
-                "ext-hash": "*",
-                "ext-json": "*",
-                "ext-mbstring": "*",
-                "monolog/monolog": "Automatically capture Monolog events as breadcrumbs"
-            },
-            "bin": [
-                "bin/sentry"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.11.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Raven_": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "David Cramer",
-                    "email": "dcramer@gmail.com"
-                }
-            ],
-            "description": "A PHP client for Sentry (http://getsentry.com)",
-            "homepage": "http://getsentry.com",
-            "keywords": [
-                "log",
-                "logging"
-            ],
-            "support": {
-                "issues": "https://github.com/getsentry/sentry-php/issues",
-                "source": "https://github.com/getsentry/sentry-php/tree/1.11.0"
-            },
-            "time": "2020-02-12T18:38:11+00:00"
         }
     ],
     "packages-dev": [
@@ -2673,5 +2488,5 @@
         "ext-curl": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.0.0"
 }
