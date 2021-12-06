@@ -6,7 +6,7 @@
         "php": "7.4.* || 8.*",
         "ext-curl": "*",
         "monolog/monolog": "^2.3",
-        "psr/log": "1.0.1",
+        "psr/log": "^1.0.1",
         "facile-it/sentry-psr-log": "^2.0",
         "psr/container": "^2.0"
     },
