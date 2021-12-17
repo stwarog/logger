@@ -2,8 +2,8 @@
 
 namespace Efficio\Logger;
 
-use Efficio\Logger\Factory\Monolog\Config;
-use Efficio\Logger\Factory\Monolog\LoggerFactory as MonologFactory;
+use Efficio\Logger\Factory\File\Config;
+use Efficio\Logger\Factory\File\LoggerFactory as MonologFactory;
 use Efficio\Logger\Factory\NullLoggerFactory;
 use Efficio\Logger\Factory\Resolver\LoggerFactory as ResolverFactory;
 use Efficio\Logger\Factory\Sentry\LoggerFactory as SentryFactory;

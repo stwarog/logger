@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Factory\Monolog;
+namespace Tests\Factory\File;
 
-use Efficio\Logger\Factory\Monolog\DefaultFormatter;
+use Efficio\Logger\Factory\File\DefaultFormatter;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\LineFormatter;
 use PHPUnit\Framework\TestCase;

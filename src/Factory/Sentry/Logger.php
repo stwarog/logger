@@ -26,7 +26,7 @@ final class Logger implements LoggerInterface
     {
         // If we have only one argument passed as exception e.g. [new Exception()]
         // then we wish to have it captured as native SDK capture exception does.
-        // To achieve this by Monolog handlers, we have to use syntax ['exception' => new Exception()].
+        // To achieve this by File handlers, we have to use syntax ['exception' => new Exception()].
 
         $hasOneArgumentAsException = count(array_filter($context, fn($i) => $i instanceof Throwable)) === 1;
         if ($hasOneArgumentAsException) {

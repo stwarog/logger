@@ -1,6 +1,6 @@
 <?php
 
-namespace Efficio\Logger\Factory\Monolog;
+namespace Efficio\Logger\Factory\File;
 
 interface ConfigInterface
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Efficio\Logger\Factory\Monolog;
+namespace Efficio\Logger\Factory\File;
 
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\LineFormatter;

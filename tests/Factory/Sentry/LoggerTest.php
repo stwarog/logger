@@ -24,7 +24,7 @@ final class LoggerTest extends TestCase
     /** @dataProvider provideMethods */
     public function testLogContextHasOneArgAsExceptionShouldBeMappedToException(string $method): void
     {
-        // Given Logger that decorated Monolog Logger
+        // Given Logger that decorated File Logger
         $monolog = $this->createMock(MonologLogger::class);
         $sut = new Logger($monolog);
 
@@ -44,7 +44,7 @@ final class LoggerTest extends TestCase
     /** @dataProvider provideMethods */
     public function testLogContextHasManyArgAsExceptionShouldNotBeMapped(string $method): void
     {
-        // Given Logger that decorated Monolog Logger
+        // Given Logger that decorated File Logger
         $monolog = $this->createMock(MonologLogger::class);
         $sut = new Logger($monolog);
 

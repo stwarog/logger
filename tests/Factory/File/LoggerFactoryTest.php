@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Factory\Monolog;
+namespace Tests\Factory\File;
 
-use Efficio\Logger\Factory\Monolog\ConfigInterface;
-use Efficio\Logger\Factory\Monolog\LoggerFactory;
+use Efficio\Logger\Factory\File\ConfigInterface;
+use Efficio\Logger\Factory\File\LoggerFactory;
 use Monolog\Logger as MonologLogger;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
