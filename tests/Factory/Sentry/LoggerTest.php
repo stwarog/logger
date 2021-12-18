@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Factory\Sentry;
 
 use Efficio\Logger\Factory\Sentry\Logger;
+use Efficio\Logger\Normalizer\Custom\ExceptionNormalizer;
 use Exception;
 use Monolog\Logger as MonologLogger;
 use PHPUnit\Framework\TestCase;
@@ -54,7 +55,13 @@ final class LoggerTest extends TestCase
         $context = [$exception1, $exception2];
 
         // Then context should be parsed
-        $expectedContext = ['extra' => [$exception1, $exception2]];
+        $errorNormalizer = new ExceptionNormalizer();
+        $expectedContext = [
+            'extra' => [
+                $errorNormalizer->normalize($exception1),
+                $errorNormalizer->normalize($exception2)
+            ]
+        ];
         $monolog->expects($this->once())->method($method)->with('message', $expectedContext);
 
         // When logged
