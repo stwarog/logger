@@ -4,44 +4,45 @@ declare(strict_types=1);
 
 namespace Efficio\Logger\Factory\Resolver;
 
+use Efficio\Logger\Environment;
 use Efficio\Logger\LoggerFactory as FactoryInterface;
 use Psr\Log\LoggerInterface as Logger;
 
 final class LoggerFactory implements FactoryInterface
 {
     private string $environment;
-    private Logger $defaultLogger;
+    private Logger $default;
     private Logger $null;
     private Logger $external;
-    private Logger $file;
+    private Logger $local;
 
     public function __construct(
-        string $environment,
-        Logger $defaultLogger,
+        Environment $environment,
+        Logger $default,
         Logger $null,
         Logger $external,
-        Logger $file
+        Logger $local
     ) {
-        $this->environment = $environment;
-        $this->defaultLogger = $defaultLogger;
+        $this->environment = (string)$environment;
+        $this->default = $default;
         $this->null = $null;
         $this->external = $external;
-        $this->file = $file;
+        $this->local = $local;
     }
 
     public function create(): Logger
     {
         switch ($this->environment) {
-            case 'development':
-                return $this->file;
-            case 'production':
-            case 'sandbox':
-            case 'staging':
+            case Environment::DEV:
+                return $this->local;
+            case Environment::PROD:
+            case Environment::SANDBOX:
+            case Environment::STAGING:
                 return $this->external;
-            case 'testing':
+            case Environment::TEST:
                 return $this->null;
             default:
-                return $this->defaultLogger;
+                return $this->default;
         }
     }
 }
