@@ -7,6 +7,7 @@ namespace Tests;
 use Efficio\Logger\Environment;
 use PHPUnit\Framework\TestCase;
 
+/** @covers Environment */
 final class EnvironmentTest extends TestCase
 {
     public function testConstructor(): void

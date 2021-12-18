@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Tests\Factory\Sentry;
+namespace Tests\Sentry;
 
-use Efficio\Logger\Factory\Sentry\Logger;
 use Efficio\Logger\Normalizer\Custom\ExceptionNormalizer;
+use Efficio\Logger\Sentry\Logger;
 use Exception;
 use Monolog\Logger as MonologLogger;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-/** @covers \Efficio\Logger\Factory\Sentry\Logger */
+/** @covers \Efficio\Logger\Sentry\Logger */
 final class LoggerTest extends TestCase
 {
     public function testConstructor(): void

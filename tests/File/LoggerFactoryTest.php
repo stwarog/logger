@@ -2,22 +2,33 @@
 
 declare(strict_types=1);
 
-namespace Tests\Factory\File;
+namespace Tests\File;
 
-use Efficio\Logger\Factory\File\ConfigInterface;
-use Efficio\Logger\Factory\File\LoggerFactory;
-use Monolog\Logger as MonologLogger;
+use Efficio\Logger\Decorator;
+use Efficio\Logger\File\Config;
+use Efficio\Logger\File\ConfigInterface;
+use Efficio\Logger\File\LoggerFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
+/** @covers \Efficio\Logger\File\LoggerFactory */
 final class LoggerFactoryTest extends TestCase
 {
-    public function testConstructor(): void
+    /** @dataProvider provideConstructor */
+    public function testConstructor($config): void
     {
-        $config = $this->createStub(ConfigInterface::class);
-        $config->method('getLevel')->willReturn('DEBUG');
+//        $config = $this->createStub(ConfigInterface::class);
+//        $config->method('getLevel')->willReturn('DEBUG');
         $sut = new LoggerFactory($config);
         $this->assertInstanceOf(LoggerFactory::class, $sut);
+    }
+
+    public function provideConstructor(): array
+    {
+        return [
+            'by array' => [['path' => '/']],
+            'by config class' => [new Config('path')],
+        ];
     }
 
     public function testCreateMonologInstance(): void
@@ -32,6 +43,6 @@ final class LoggerFactoryTest extends TestCase
 
         // Then newly created instance should be
         $this->assertInstanceOf(LoggerInterface::class, $actual);
-        $this->assertInstanceOf(MonologLogger::class, $actual);
+        $this->assertInstanceOf(Decorator::class, $actual);
     }
 }

@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\Factory\File;
+namespace Tests\File;
 
-use Efficio\Logger\Factory\File\DefaultFormatter;
+use Efficio\Logger\File\DefaultFormatter;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\LineFormatter;
 use PHPUnit\Framework\TestCase;
 
+/** @covers \Efficio\Logger\File\DefaultFormatter */
 final class DefaultFormatterTest extends TestCase
 {
     public function testConstructor(): void

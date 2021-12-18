@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Tests\Factory\Resolver;
+namespace Tests\Resolver;
 
 use Efficio\Logger\Environment;
-use Efficio\Logger\Factory\Resolver\LoggerFactory;
-use Efficio\Logger\Factory\Sentry\LoggerFactory as SentryFactory;
+use Efficio\Logger\Resolver\LoggerFactory;
+use Efficio\Logger\Sentry\LoggerFactory as SentryFactory;
 use Generator;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
+/** @covers \Efficio\Logger\Resolver\LoggerFactory */
 final class LoggerFactoryTest extends TestCase
 {
     public function testConstructor(): void

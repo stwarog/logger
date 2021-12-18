@@ -2,11 +2,10 @@
 
 namespace Efficio\Logger;
 
-use Efficio\Logger\Factory\File\Config;
-use Efficio\Logger\Factory\File\LoggerFactory as MonologFactory;
-use Efficio\Logger\Factory\NullLoggerFactory;
-use Efficio\Logger\Factory\Resolver\LoggerFactory as ResolverFactory;
-use Efficio\Logger\Factory\Sentry\LoggerFactory as SentryFactory;
+use Efficio\Logger\File\Config;
+use Efficio\Logger\File\LoggerFactory as MonologFactory;
+use Efficio\Logger\Resolver\LoggerFactory as ResolverFactory;
+use Efficio\Logger\Sentry\LoggerFactory as SentryFactory;
 use Psr\Container\ContainerInterface as Container;
 use Psr\Log\LoggerInterface;
 use RuntimeException;

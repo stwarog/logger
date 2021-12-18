@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\Factory\Sentry;
+namespace Tests\Sentry;
 
-use Efficio\Logger\Factory\Sentry\Logger;
-use Efficio\Logger\Factory\Sentry\LoggerFactory;
+use Efficio\Logger\Sentry\Logger;
+use Efficio\Logger\Sentry\LoggerFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-/** @covers \Efficio\Logger\Factory\Sentry\LoggerFactory */
+/** @covers \Efficio\Logger\Sentry\LoggerFactory */
 final class LoggerFactoryTest extends TestCase
 {
     public function testConstructor(): void

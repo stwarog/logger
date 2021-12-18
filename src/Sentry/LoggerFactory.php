@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Efficio\Logger\Factory\Sentry;
+namespace Efficio\Logger\Sentry;
 
+use DateTimeZone;
 use Efficio\Logger\LoggerFactory as FactoryInterface;
+use Efficio\Logger\Sentry\Logger as Decorator;
 use Monolog\Logger as MonologLogger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -18,16 +20,18 @@ final class LoggerFactory implements FactoryInterface
 
     private string $dsn;
     private array $config;
+    private ?DateTimeZone $timezone;
 
-    public function __construct(string $dsn, array $config = [])
+    public function __construct(string $dsn, array $config = [], DateTimeZone $zone = null)
     {
         $this->dsn = $dsn;
         $this->config = $config;
+        $this->timezone = $zone;
     }
 
     public function create(): LoggerInterface
     {
-        $monolog = new MonologLogger(self::LOGGER_NAME);
+        $monolog = new MonologLogger(self::LOGGER_NAME, [], [], $this->timezone);
 
         $config = array_merge(['dsn' => $this->dsn], $this->config);
         $client = ClientBuilder::create($config)->getClient();
@@ -39,6 +43,6 @@ final class LoggerFactory implements FactoryInterface
 
         $monolog->pushHandler($handler);
 
-        return new Logger($monolog);
+        return new Decorator($monolog);
     }
 }

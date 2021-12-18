@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Efficio\Logger\Factory\Resolver;
+namespace Efficio\Logger\Resolver;
 
 use Efficio\Logger\Environment;
 use Efficio\Logger\LoggerFactory as FactoryInterface;
