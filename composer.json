@@ -42,7 +42,8 @@
     },
     "scripts": {
         "phpunit": "./vendor/bin/phpunit --testdox --colors",
-        "tests:unit": "@phpunit -c phpunit.xml",
+        "tests:unit": "@phpunit -c phpunit.xml --testsuite unit",
+        "tests:integration": "@phpunit -c phpunit.xml --testsuite integration",
         "phpstan": "php -d memory_limit=400M vendor/bin/phpstan analyse -c phpstan.neon --level=max",
         "phpcs": "./vendor/bin/phpcs --report=full --standard=PSR12 ./src",
         "phpcs:fix": "./vendor/bin/phpcbf --standard=PSR12 ./src",
