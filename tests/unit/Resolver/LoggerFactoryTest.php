@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Resolver;
+namespace Tests\Unit\Resolver;
 
 use Efficio\Logger\Environment;
 use Efficio\Logger\Resolver\LoggerFactory;

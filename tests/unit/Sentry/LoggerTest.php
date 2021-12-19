@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Sentry;
+namespace Tests\Unit\Sentry;
 
 use Efficio\Logger\Normalizer\Custom\ExceptionNormalizer;
 use Efficio\Logger\Sentry\Logger;

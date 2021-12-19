@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\File;
+namespace Tests\Unit\File;
 
 use Efficio\Logger\Decorator;
 use Efficio\Logger\File\Config;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Sentry;
+namespace Tests\Unit\Sentry;
 
 use Efficio\Logger\Sentry\Logger;
 use Efficio\Logger\Sentry\LoggerFactory;

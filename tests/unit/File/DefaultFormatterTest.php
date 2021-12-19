@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\File;
+namespace Tests\Unit\File;
 
 use Efficio\Logger\File\DefaultFormatter;
 use Monolog\Formatter\FormatterInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\NullObject;
+namespace Tests\Unit\NullObject;
 
 use Efficio\Logger\NullObject\LoggerFactory;
 use PHPUnit\Framework\TestCase;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Normalizer;
+namespace Tests\Unit\Normalizer;
 
 use DateTime;
 use Efficio\Logger\Normalizer\Normalizer;
