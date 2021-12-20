@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Resolver;
 
+use Efficio\Logger\Decorator;
 use Efficio\Logger\Environment;
+use Efficio\Logger\File\Config;
+use Efficio\Logger\File\LoggerFactory as FileFactory;
+use Efficio\Logger\LoggerFactory as LoggerFactoryInterface;
+use Efficio\Logger\NullObject\LoggerFactory as NullObjectFactory;
 use Efficio\Logger\Resolver\LoggerFactory;
+use Efficio\Logger\Sentry\Logger;
 use Efficio\Logger\Sentry\LoggerFactory as SentryFactory;
+use Efficio\Logger\Types;
 use Generator;
-use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -20,22 +26,29 @@ final class LoggerFactoryTest extends TestCase
     {
         $sut = new LoggerFactory(
             new Environment(Environment::STAGING),
-            $this->createStub(LoggerInterface::class),
-            $this->createStub(LoggerInterface::class),
-            $this->createStub(LoggerInterface::class),
-            $this->createStub(LoggerInterface::class),
+            $this->createStub(LoggerFactoryInterface::class),
+            $this->createStub(LoggerFactoryInterface::class),
+            $this->createStub(LoggerFactoryInterface::class),
+            $this->createStub(LoggerFactoryInterface::class),
         );
-        $this->assertInstanceOf(LoggerFactory::class, $sut);
+        $this->assertInstanceOf(LoggerFactoryInterface::class, $sut);
     }
 
     /** @dataProvider providerForCreateResolverInstance */
-    public function testCreateResolverInstance(string $environment, string $expectedLogger): void
+    public function testCreateResolverInstance(string $environment, string $loggerFactoryName): void
     {
         // Given factory
-        $loggers['default'] = new NullLogger();
-        $loggers['null'] = new NullLogger();
-        $loggers['external'] = (new SentryFactory('https://public@sentry.example.com/1'))->create();
-        $loggers['file'] = new Logger('name');
+        $loggers['default'] = new NullObjectFactory();
+        $loggers['null'] = new NullObjectFactory();
+        $loggers['external'] = new SentryFactory('https://public@sentry.example.com/1');
+        $loggers['file'] = new FileFactory(new Config('/'));
+
+        // And expected concrete loggers
+        $expectedLoggerInstance[Types::DEFAULT] = NullLogger::class;
+        $expectedLoggerInstance[Types::NULL] = NullLogger::class;
+        $expectedLoggerInstance[Types::EXTERNAL] = Logger::class;
+        $expectedLoggerInstance[Types::LOCAL] = Decorator::class;
+
         $sut = new LoggerFactory(new Environment($environment), ...array_values($loggers));
 
         // When created
@@ -43,16 +56,16 @@ final class LoggerFactoryTest extends TestCase
 
         // Then newly created instance should be
         $this->assertInstanceOf(LoggerInterface::class, $actual);
-        $this->assertInstanceOf(get_class($loggers[$expectedLogger]), $actual);
+        $this->assertInstanceOf($expectedLoggerInstance[$loggerFactoryName], $actual);
     }
 
     public function providerForCreateResolverInstance(): Generator
     {
-        yield 'environment = development should use local (file)' => ['development', 'file'];
-        yield 'environment = production should use external (sentry)' => ['production', 'external'];
-        yield 'environment = sandbox should use external (sentry)' => ['sandbox', 'external'];
-        yield 'environment = staging should use external (sentry)' => ['staging', 'external'];
-        yield 'environment = testing should use empty' => ['testing', 'null'];
-        yield 'environment = any other should use default' => ['any-other', 'default'];
+        yield 'environment = development should use local (file)' => ['development', Types::LOCAL];
+        yield 'environment = production should use external (sentry)' => ['production', Types::EXTERNAL];
+        yield 'environment = sandbox should use external (sentry)' => ['sandbox', Types::EXTERNAL];
+        yield 'environment = staging should use external (sentry)' => ['staging', Types::EXTERNAL];
+        yield 'environment = testing should use empty' => ['testing', Types::NULL];
+        yield 'environment = any other should use default' => ['any-other', Types::DEFAULT];
     }
 }

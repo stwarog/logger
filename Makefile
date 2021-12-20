@@ -5,6 +5,9 @@ check: cs stan unit
 unit:
 	docker-compose run --rm composer tests:unit
 
+integration:
+	docker-compose run --rm composer tests:integration
+
 stan:
 	docker-compose run --rm composer phpstan
 

@@ -36,7 +36,7 @@ final class SymfonyTest extends TestCase
 
     public function provideNormalize(): Generator
     {
-        # todo: add some assetion for it
+        # todo: add some assertion for it
 //        yield 'exception => array' => [
 //            'data' => [
 //                [new Exception('some message')]

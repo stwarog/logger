@@ -17,8 +17,6 @@ final class LoggerFactoryTest extends TestCase
     /** @dataProvider provideConstructor */
     public function testConstructor($config): void
     {
-//        $config = $this->createStub(ConfigInterface::class);
-//        $config->method('getLevel')->willReturn('DEBUG');
         $sut = new LoggerFactory($config);
         $this->assertInstanceOf(LoggerFactory::class, $sut);
     }

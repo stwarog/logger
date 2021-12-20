@@ -11,17 +11,17 @@ use Psr\Log\LoggerInterface as Logger;
 final class LoggerFactory implements FactoryInterface
 {
     private string $environment;
-    private Logger $default;
-    private Logger $null;
-    private Logger $external;
-    private Logger $local;
+    private FactoryInterface $default;
+    private FactoryInterface $null;
+    private FactoryInterface $external;
+    private FactoryInterface $local;
 
     public function __construct(
         Environment $environment,
-        Logger $default,
-        Logger $null,
-        Logger $external,
-        Logger $local
+        FactoryInterface $default,
+        FactoryInterface $null,
+        FactoryInterface $external,
+        FactoryInterface $local
     ) {
         $this->environment = (string)$environment;
         $this->default = $default;
@@ -34,15 +34,15 @@ final class LoggerFactory implements FactoryInterface
     {
         switch ($this->environment) {
             case Environment::DEV:
-                return $this->local;
+                return $this->local->create();
             case Environment::PROD:
             case Environment::SANDBOX:
             case Environment::STAGING:
-                return $this->external;
+                return $this->external->create();
             case Environment::TEST:
-                return $this->null;
+                return $this->null->create();
             default:
-                return $this->default;
+                return $this->default->create();
         }
     }
 }
