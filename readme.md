@@ -18,7 +18,7 @@ LoggerInterface (PSR-3) object with minimal setup.
 # Config is optional
 
 $config = [
-    'level' => LogLevel::DEBUG # Default value
+    'level' => LogLevel::ERROR # Default value
 ]
 
 $factory = new LoggerFactory('PASTE HERE SENTRY LINK', $config);
@@ -97,5 +97,56 @@ $logger = $factory->create();
 
 ## "Resolver" logger
 This is another kind of logger that acts like a resolver. By provided environment name is able to
-determine what concrete logger should be used, by interaction with DI Container.
+determine what concrete logger should be used.
 
+### Copy & Paste full example
+
+```php
+use Efficio\Logger\{Environment, File, File\Config, NullObject, Resolver, Sentry};
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
+
+$container->loggerFactory = function () {
+
+    $nullObject = new NullObject\LoggerFactory();
+    
+    $sentry = new Sentry\LoggerFactory(
+        'https://6eaf4327739d4645b96210a5b1bd6fcb@o1092750.ingest.sentry.io/your-id',
+        ['level' => LogLevel::ERROR] # it will log only > LogLevel::ERROR
+    );
+    
+    $file = new File\LoggerFactory(
+        new Config(
+            __DIR__ . '/../var/logs/', # ensure path is writable!
+            'app.txt',
+            0777, # todo it should be something more strict
+            LogLevel::DEBUG # it will log everything
+        )
+    );
+
+    return new Resolver\LoggerFactory(
+        new Environment(getenv('ENVIRONMENT_NAME')),
+        $nullObject,
+        $nullObject,
+        $sentry,
+        $file
+    );
+};
+
+$container->logger = fn(): LoggerInterface => $container->loggerFactory->create();
+```
+
+### Using Container
+There is also an alternative approach to initialize the Resolver Factory by using Container, but 4 predefined 
+aliases for Factories must be defined:
+
+```php
+$container[Types::NULL] = NullLogger::class;
+$container[Types::DEFAULT] = $container[Types::NULL];
+$container[Types::EXTERNAL] = SentryLogger::class;
+$container[Types::LOCAL] = FileLogger::class;
+
+Resolver\LoggerFactory::createFrom($container);
+
+$container->logger = fn(): LoggerInterface => $container->loggerFactory->create();
+```
