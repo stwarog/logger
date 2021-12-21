@@ -2,6 +2,8 @@
 
 Few implementations of commonly used Loggers in our system, compatible with [PSR-3](https://www.php-fig.org/psr/psr-3/).
 
+Well documented details are attached in PSR documents.
+
 Most of the implementations depends on Monolog.
 
 ## General
@@ -30,7 +32,7 @@ $logger = $factory->create();
 To capture Exception, simply as Context argument, pass an Exception wrapped in parentheses e.g.
 
 ```php
-$logger->error('custom message', [new Exception()]);
+$logger->error('custom message', ['exception' => new Exception()]);
 ```
 
 It will produce detailed log in the app, like native sdk `capture_exception()` function.
@@ -72,7 +74,7 @@ It will produce array representation of Exception with track.
 To capture Exception, simply as Context argument, pass an Exception wrapped in parentheses e.g.
 
 ```php
-$logger->error('custom message', [new Exception()]);
+$logger->error('custom message', ['exception' => new Exception()]);
 ```
 
 ### Adding custom logs
@@ -106,30 +108,32 @@ use Efficio\Logger\{Environment, File, File\Config, NullObject, Resolver, Sentry
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
-$container->loggerFactory = function () {
 
-    $nullObject = new NullObject\LoggerFactory();
-    
-    $sentry = new Sentry\LoggerFactory(
-        'https://6eaf4327739d4645b96210a5b1bd6fcb@o1092750.ingest.sentry.io/your-id',
-        ['level' => LogLevel::ERROR] # it will log only > LogLevel::ERROR
-    );
-    
-    $file = new File\LoggerFactory(
-        new Config(
-            __DIR__ . '/../var/logs/', # ensure path is writable!
-            'app.txt',
-            0777, # todo it should be something more strict
-            LogLevel::DEBUG # it will log everything
-        )
-    );
+$container->nullLoggerFactory = fn(): LoggerFactory => new NullObject\LoggerFactory();
+
+$container->sentryLoggerFactory = fn(): LoggerFactory => new Sentry\LoggerFactory(
+    "getenv('SENTRY_DSN')",
+    ['level' => LogLevel::ERROR]
+);
+
+$container->fileLoggerFactory = fn(): LoggerFactory => new File\LoggerFactory(
+    new Config(
+        __DIR__ . '/../../var/logs/',
+        'app.txt',
+        0777, # todo
+        LogLevel::DEBUG,
+    )
+);
+
+$container->loggerFactory = function () use ($container) {
+    $defaultLogger = $container->nullLoggerFactory;
 
     return new Resolver\LoggerFactory(
-        new Environment(getenv('ENVIRONMENT_NAME')),
-        $nullObject,
-        $nullObject,
-        $sentry,
-        $file
+        new LoggerEnvironment(getenv('ENVIRONMENT_NAME')),
+        $defaultLogger,                  # default
+        $container->nullLoggerFactory,   # null
+        $container->sentryLoggerFactory, # external 
+        $container->fileLoggerFactory    # local
     );
 };
 
