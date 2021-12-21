@@ -35,6 +35,8 @@ final class LoggerFactoryTest extends TestCase
 
     public function testLoggerCreateDirectoryWhenNotExists(): void
     {
+        $this->cleanUp();
+
         // Given logger factory
         $factory = $this->getLoggerFactory();
 
@@ -110,7 +112,7 @@ final class LoggerFactoryTest extends TestCase
 
     private function getFileName(): string
     {
-        return sprintf('app-%s.txt', (new DateTime)->format('Y-m-d'));
+        return sprintf('app-%s.txt', (new DateTime())->format('Y-m-d'));
     }
 
     private function assertValidOutput(string $expected): void

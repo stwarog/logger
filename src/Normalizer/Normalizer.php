@@ -2,8 +2,14 @@
 
 namespace Efficio\Logger\Normalizer;
 
+use ArrayObject;
+
 /** @internal */
 interface Normalizer
 {
-    public function normalize(array $data): array;
+    /**
+     * @param mixed $data
+     * @return array|string|int|float|bool|ArrayObject|null \ArrayObject
+     */
+    public function normalize($data);
 }

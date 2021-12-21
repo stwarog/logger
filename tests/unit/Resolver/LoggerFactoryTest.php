@@ -9,11 +9,11 @@ use Efficio\Logger\Environment;
 use Efficio\Logger\File\Config;
 use Efficio\Logger\File\LoggerFactory as FileFactory;
 use Efficio\Logger\LoggerFactory as LoggerFactoryInterface;
+use Efficio\Logger\LoggerTypes;
 use Efficio\Logger\NullObject\LoggerFactory as NullObjectFactory;
 use Efficio\Logger\Resolver\LoggerFactory;
 use Efficio\Logger\Sentry\Logger;
 use Efficio\Logger\Sentry\LoggerFactory as SentryFactory;
-use Efficio\Logger\Types;
 use Generator;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -50,10 +50,10 @@ final class LoggerFactoryTest extends TestCase
         $container->method('get')
             ->withConsecutive(
                 ['environment'],
-                [Types::DEFAULT],
-                [Types::NULL],
-                [Types::EXTERNAL],
-                [Types::LOCAL],
+                [LoggerTypes::DEFAULT],
+                [LoggerTypes::NULL],
+                [LoggerTypes::EXTERNAL],
+                [LoggerTypes::LOCAL],
             )
             ->willReturnOnConsecutiveCalls(
                 $env,
@@ -80,10 +80,10 @@ final class LoggerFactoryTest extends TestCase
         $loggers['file'] = new FileFactory(new Config('/'));
 
         // And expected concrete loggers
-        $expectedLoggerInstance[Types::DEFAULT] = NullLogger::class;
-        $expectedLoggerInstance[Types::NULL] = NullLogger::class;
-        $expectedLoggerInstance[Types::EXTERNAL] = Logger::class;
-        $expectedLoggerInstance[Types::LOCAL] = Decorator::class;
+        $expectedLoggerInstance[LoggerTypes::DEFAULT] = NullLogger::class;
+        $expectedLoggerInstance[LoggerTypes::NULL] = NullLogger::class;
+        $expectedLoggerInstance[LoggerTypes::EXTERNAL] = Logger::class;
+        $expectedLoggerInstance[LoggerTypes::LOCAL] = Decorator::class;
 
         $sut = new LoggerFactory(new Environment($environment), ...array_values($loggers));
 
@@ -97,11 +97,11 @@ final class LoggerFactoryTest extends TestCase
 
     public function providerForCreateResolverInstance(): Generator
     {
-        yield 'environment = development should use local (file)' => ['development', Types::LOCAL];
-        yield 'environment = production should use external (sentry)' => ['production', Types::EXTERNAL];
-        yield 'environment = sandbox should use external (sentry)' => ['sandbox', Types::EXTERNAL];
-        yield 'environment = staging should use external (sentry)' => ['staging', Types::EXTERNAL];
-        yield 'environment = testing should use empty' => ['testing', Types::NULL];
-        yield 'environment = any other should use default' => ['any-other', Types::DEFAULT];
+        yield 'environment = development should use local (file)' => ['development', LoggerTypes::LOCAL];
+        yield 'environment = production should use external (sentry)' => ['production', LoggerTypes::EXTERNAL];
+        yield 'environment = sandbox should use external (sentry)' => ['sandbox', LoggerTypes::EXTERNAL];
+        yield 'environment = staging should use external (sentry)' => ['staging', LoggerTypes::EXTERNAL];
+        yield 'environment = testing should use empty' => ['testing', LoggerTypes::NULL];
+        yield 'environment = any other should use default' => ['any-other', LoggerTypes::DEFAULT];
     }
 }

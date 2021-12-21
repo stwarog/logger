@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Efficio\Logger\Normalizer;
 
 use Efficio\Logger\Normalizer\Custom\ExceptionNormalizer;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer;
@@ -29,10 +28,8 @@ final class Symfony implements Normalizer
         $this->serializer = new Serializer($normalizers, []);
     }
 
-    /**
-     * @throws ExceptionInterface
-     */
-    public function normalize(array $data): array
+    /** @inheritdoc */
+    public function normalize($data)
     {
         return $this->serializer->normalize($data);
     }

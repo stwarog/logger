@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Sentry;
 
-use Efficio\Logger\Normalizer\Custom\ExceptionNormalizer;
 use Efficio\Logger\Sentry\Logger;
 use Exception;
 use Monolog\Logger as MonologLogger;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 
 /** @covers \Efficio\Logger\Sentry\Logger */
 final class LoggerTest extends TestCase
@@ -23,8 +23,12 @@ final class LoggerTest extends TestCase
     }
 
     /** @dataProvider provideMethods */
-    public function testLogContextHasOneArgAsExceptionShouldBeMappedToException(string $method): void
+    public function testLogContextHasArgumentAsExceptionShouldThrowException(string $method): void
     {
+        // Expect exception
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Invalid exception handling, exception should be passed as "exception" key');
+
         // Given Logger that decorated File Logger
         $monolog = $this->createMock(MonologLogger::class);
         $sut = new Logger($monolog);
@@ -33,36 +37,7 @@ final class LoggerTest extends TestCase
         $exception = new Exception('some message');
         $context = [$exception];
 
-        // Then context should be parsed
-        $expectedContext = ['exception' => $exception];
-        $monolog->expects($this->once())->method($method)->with('message', $expectedContext);
-
-        // When logged
-        $sut->$method('message', $context);
-    }
-
-
-    /** @dataProvider provideMethods */
-    public function testLogContextHasManyArgAsExceptionShouldNotBeMapped(string $method): void
-    {
-        // Given Logger that decorated File Logger
-        $monolog = $this->createMock(MonologLogger::class);
-        $sut = new Logger($monolog);
-
-        // And Context with one argument as exception
-        $exception1 = new Exception('some message');
-        $exception2 = new Exception('some message');
-        $context = [$exception1, $exception2];
-
-        // Then context should be parsed
-        $errorNormalizer = new ExceptionNormalizer();
-        $expectedContext = [
-            'extra' => [
-                $errorNormalizer->normalize($exception1),
-                $errorNormalizer->normalize($exception2)
-            ]
-        ];
-        $monolog->expects($this->once())->method($method)->with('message', $expectedContext);
+        $monolog->expects($this->never())->method($method);
 
         // When logged
         $sut->$method('message', $context);

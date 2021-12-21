@@ -26,7 +26,8 @@ class Decorator implements LoggerInterface
 
     protected function parseContext(array $context): array
     {
-        return $this->normalizer->normalize($context);
+        $normalized = $this->normalizer->normalize($context);
+        return is_array($normalized) ? $normalized : [$normalized];
     }
 
     public function emergency($message, array $context = []): void

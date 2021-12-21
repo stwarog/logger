@@ -14,7 +14,10 @@ use Psr\Log\LoggerInterface;
 /** @covers \Efficio\Logger\File\LoggerFactory */
 final class LoggerFactoryTest extends TestCase
 {
-    /** @dataProvider provideConstructor */
+    /**
+     * @param array|Config $config
+     * @dataProvider provideConstructor
+     */
     public function testConstructor($config): void
     {
         $sut = new LoggerFactory($config);
