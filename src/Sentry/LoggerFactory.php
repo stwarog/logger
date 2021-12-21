@@ -38,7 +38,7 @@ final class LoggerFactory implements FactoryInterface
 
         $handler = new Handler(
             new Hub($client),
-            $config['level'] ?? LogLevel::DEBUG
+            $config['level'] ?? LogLevel::ERROR
         );
 
         $monolog->pushHandler($handler);
