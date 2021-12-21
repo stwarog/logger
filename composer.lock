@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8318702d831f1859e480059e9e847114",
+    "content-hash": "4da55128cc0931c3d5904fb6368c6cf9",
     "packages": [
         {
             "name": "bgalati/monolog-sentry-handler",

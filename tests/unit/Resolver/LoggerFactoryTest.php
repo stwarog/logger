@@ -16,6 +16,7 @@ use Efficio\Logger\Sentry\LoggerFactory as SentryFactory;
 use Efficio\Logger\Types;
 use Generator;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -31,6 +32,41 @@ final class LoggerFactoryTest extends TestCase
             $this->createStub(LoggerFactoryInterface::class),
             $this->createStub(LoggerFactoryInterface::class),
         );
+        $this->assertInstanceOf(LoggerFactoryInterface::class, $sut);
+    }
+
+    public function testCreateFromContainer(): void
+    {
+        // Given LoggerFactory classes in DI Container
+        $env = Environment::STAGING;
+
+        $default = $this->createStub(LoggerFactoryInterface::class);
+        $null = $this->createStub(LoggerFactoryInterface::class);
+        $external = $this->createStub(LoggerFactoryInterface::class);
+        $local = $this->createStub(LoggerFactoryInterface::class);
+
+        $container = $this->createMock(ContainerInterface::class);
+
+        $container->method('get')
+            ->withConsecutive(
+                ['environment'],
+                [Types::DEFAULT],
+                [Types::NULL],
+                [Types::EXTERNAL],
+                [Types::LOCAL],
+            )
+            ->willReturnOnConsecutiveCalls(
+                $env,
+                $default,
+                $null,
+                $external,
+                $local
+            );
+
+        // When ResolverFactory is created from a given Container
+        $sut = LoggerFactory::createFrom($container);
+
+        // Then depending on environment,
         $this->assertInstanceOf(LoggerFactoryInterface::class, $sut);
     }
 

@@ -6,6 +6,8 @@ namespace Efficio\Logger\Resolver;
 
 use Efficio\Logger\Environment;
 use Efficio\Logger\LoggerFactory as FactoryInterface;
+use Efficio\Logger\Types;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface as Logger;
 
 final class LoggerFactory implements FactoryInterface
@@ -44,5 +46,16 @@ final class LoggerFactory implements FactoryInterface
             default:
                 return $this->default->create();
         }
+    }
+
+    public static function createFrom(ContainerInterface $container): self
+    {
+        return new self(
+            new Environment($container->get('environment')),
+            $container->get(Types::DEFAULT),
+            $container->get(Types::NULL),
+            $container->get(Types::EXTERNAL),
+            $container->get(Types::LOCAL),
+        );
     }
 }
