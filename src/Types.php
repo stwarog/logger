@@ -9,5 +9,5 @@ final class Types
     public const EXTERNAL = 'external-logger';
     public const LOCAL = 'local-logger';
     public const NULL = 'null-logger';
-    public const DEFAULT = 'defailt';
+    public const DEFAULT = 'default';
 }
