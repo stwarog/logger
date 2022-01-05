@@ -33,12 +33,18 @@ final class LoggerFactory implements FactoryInterface
     {
         $monolog = new MonologLogger(self::LOGGER_NAME, [], [], $this->timezone);
 
+        $level = $config['level'] ?? LogLevel::ERROR;
+
+        if (isset($this->config['level'])) {
+            unset($this->config['level']);
+        }
+
         $config = array_merge(['dsn' => $this->dsn], $this->config);
         $client = ClientBuilder::create($config)->getClient();
 
         $handler = new Handler(
             new Hub($client),
-            $config['level'] ?? LogLevel::ERROR
+            $level
         );
 
         $monolog->pushHandler($handler);
