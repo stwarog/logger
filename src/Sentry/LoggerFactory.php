@@ -33,7 +33,7 @@ final class LoggerFactory implements FactoryInterface
     {
         $monolog = new MonologLogger(self::LOGGER_NAME, [], [], $this->timezone);
 
-        $level = $config['level'] ?? LogLevel::ERROR;
+        $level = $this->config['level'] ?? LogLevel::ERROR;
 
         if (isset($this->config['level'])) {
             unset($this->config['level']);
