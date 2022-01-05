@@ -31,6 +31,10 @@ final class Logger extends Decorator implements LoggerInterface
 
         // There is also no easy way to add a context, so we have to map it here.
 
+        if ($hasNotExceptionKey) {
+            return $this->normalizer->normalize($context);
+        }
+
         $extra = $context;
         unset($extra['exception']);
         $extra = $this->normalizer->normalize($extra);
