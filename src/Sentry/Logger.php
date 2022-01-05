@@ -31,6 +31,17 @@ final class Logger extends Decorator implements LoggerInterface
 
         // There is also no easy way to add a context, so we have to map it here.
 
-        return ['extra' => $this->normalizer->normalize($context)];
+        $extra = $context;
+        unset($extra['exception']);
+        $extra = $this->normalizer->normalize($extra);
+
+        $context = ['exception' => $context['exception']];
+
+        return array_merge(
+            $context,
+            [
+                'extra' => $extra
+            ]
+        );
     }
 }

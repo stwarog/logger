@@ -43,6 +43,33 @@ final class LoggerTest extends TestCase
         $sut->$method('message', $context);
     }
 
+    public function testContextShouldBeMappedWithoutExceptionKey(): void
+    {
+        // Given Logger that decorated File Logger
+        $monolog = $this->createMock(MonologLogger::class);
+        $sut = new Logger($monolog);
+
+        // And Context with exception key
+        $exception = new Exception('some message');
+        $context = [
+            'exception' => $exception,
+            'something-extra' => 123
+        ];
+
+        $expectedContext = [
+            'exception' => $exception,
+            'extra' => [
+                'something-extra' => 123,
+            ]
+        ];
+        $monolog->expects($this->once())
+            ->method('error')
+            ->with('message', $expectedContext);
+
+        // When logged
+        $sut->error('message', $context);
+    }
+
     public function provideMethods(): array
     {
         return [
