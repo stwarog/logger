@@ -50,7 +50,6 @@ final class SymfonyTest extends TestCase
         ];
 
         $jsonSerializableClass = new class () implements JsonSerializable {
-
             public function jsonSerialize()
             {
                 return ['field' => 1, 'field2' => 'abc'];

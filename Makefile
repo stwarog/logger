@@ -9,12 +9,15 @@ integration:
 	docker-compose run --rm composer tests:integration
 
 stan:
-	docker-compose run --rm composer phpstan
+	docker-compose run --rm composer efficio:phpstan
+
+lint:
+	docker-compose run --rm composer efficio:lint
 
 cs:
-	docker-compose run --rm composer phpcs
+	docker-compose run --rm composer efficio:cs
 cs_fix:
-	docker-compose run --rm composer phpcs:fix
+	docker-compose run --rm composer efficio:cbf
 
 build:
 	docker-compose pull
