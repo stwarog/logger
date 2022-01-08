@@ -1,0 +1,29 @@
+stages:
+  - test:unit
+
+before_script:
+  - git fetch origin
+  - git merge origin/master
+
+unit_tests:
+  stage: test:unit
+  image: registry.gitlab.com/efficio1/engineering/docker/efficio-docker-image/efficio-php-74-cli:3
+  interruptible: true
+  tags:
+    - private_net
+    - docker_socket
+    - builds
+  before_script:
+    - git config --global user.email "you@example.com"
+    - git config --global user.name "Your Name"
+    - git fetch
+    - git merge origin/master
+    - composer install --no-interaction --no-progress --no-suggest -o
+  script:
+    - composer validate
+    - composer efficio:lint
+    - composer efficio:cs
+    - composer efficio:phpstan
+    - composer tests:unit
+  after_script:
+    - echo "Done!"
