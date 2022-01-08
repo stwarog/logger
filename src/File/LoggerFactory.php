@@ -7,7 +7,7 @@ namespace Efficio\Logger\File;
 use DateTimeZone;
 use Efficio\Logger\LoggerFactory as FactoryInterface;
 use Efficio\Logger\Monolog\Processor\Normalization;
-use Monolog\Formatter\LineFormatter;
+use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
@@ -57,8 +57,11 @@ final class LoggerFactory implements FactoryInterface
             $c->getFilePermission()
         );
 
+        $formatter = new JsonFormatter();
+        $formatter->setJsonPrettyPrint(true);
+
         $rotatingFileHandler->setFormatter(
-            new LineFormatter()
+            $formatter
         );
 
         return [$rotatingFileHandler];

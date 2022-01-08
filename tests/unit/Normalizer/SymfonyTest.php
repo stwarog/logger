@@ -73,7 +73,7 @@ final class SymfonyTest extends TestCase
             'expected' => [
                 [
                     'field1' => 'field1',
-                    'nested' => (new DateTime('yesterday'))->format(\DateTime::RFC3339),
+                    'nested' => (new DateTime('yesterday'))->format(DateTime::RFC3339),
                 ]
             ]
         ];

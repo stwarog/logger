@@ -5,11 +5,11 @@ namespace Efficio\Logger\File;
 interface ConfigInterface
 {
     /**
+     * @return string
      * @see \Monolog\Logger constants:
      * 100|200|250|300|400|500|550|600|'ALERT'|'alert'|'CRITICAL'|'critical'|'DEBUG'|'debug'|'EMERGENCY'
      * |'emergency'|'ERROR'|'error'|'INFO'|'info'|'NOTICE'|'notice'|'WARNING'|'warning'
      *
-     * @return string
      */
     public function getLevel(): string;
 

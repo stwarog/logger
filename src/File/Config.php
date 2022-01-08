@@ -28,6 +28,16 @@ final class Config implements ConfigInterface
         $this->level = $level;
     }
 
+    public static function fromArray(array $config): self
+    {
+        return new self(
+            $config['path'],
+            $config['file_name'] ?? self::DEFAULT_FILE_NAME,
+            $config['permission'] ?? self::DEFAULT_PERMISSION,
+            $config['level'] ?? LogLevel::DEBUG,
+        );
+    }
+
     public function getLevel(): string
     {
         return $this->level;
@@ -46,15 +56,5 @@ final class Config implements ConfigInterface
     public function getFilePermission(): int
     {
         return $this->permission;
-    }
-
-    public static function fromArray(array $config): self
-    {
-        return new self(
-            $config['path'],
-            $config['file_name'] ?? self::DEFAULT_FILE_NAME,
-            $config['permission'] ?? self::DEFAULT_PERMISSION,
-            $config['level'] ?? LogLevel::DEBUG,
-        );
     }
 }

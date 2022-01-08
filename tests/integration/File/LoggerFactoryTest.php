@@ -18,25 +18,8 @@ final class LoggerFactoryTest extends TestCase
 {
     private const PATH = __DIR__ . DIRECTORY_SEPARATOR . 'some-nested-path' . DIRECTORY_SEPARATOR;
 
-    protected function tearDown(): void
-    {
-        self::cleanUp();
-        parent::tearDown();
-    }
-
-    private static function cleanUp(): void
-    {
-        $path = self::PATH;
-
-        if (file_exists($path)) {
-            system("rm -rf " . escapeshellarg($path));
-        }
-    }
-
     public function testLoggerCreateDirectoryWhenNotExists(): void
     {
-        $this->cleanUp();
-
         // Given logger factory
         $factory = $this->getLoggerFactory();
 
@@ -46,13 +29,27 @@ final class LoggerFactoryTest extends TestCase
 
         // When log is created
         $logger = $factory->create();
-        $logger->info('some log message');
+        $logger->info('message');
 
         // Then path should be created
         $this->assertTrue(
             file_exists($expectedFullName),
             sprintf('Given path does not exist: %s', $expectedFullName)
         );
+    }
+
+    private function getLoggerFactory(): LoggerFactory
+    {
+        return new LoggerFactory(
+            new Config(
+                self::PATH
+            )
+        );
+    }
+
+    private function getFileName(): string
+    {
+        return sprintf('app-%s.txt', (new DateTime())->format('Y-m-d'));
     }
 
     /** @dataProvider provideData */
@@ -72,11 +69,25 @@ final class LoggerFactoryTest extends TestCase
         $this->assertValidOutput($expected);
     }
 
+    private function assertValidOutput(string $expected): void
+    {
+        $actualContent = (string)file_get_contents(self::PATH . $this->getFileName());
+        $flatten = fn(string $actual) => str_replace([' ', PHP_EOL], ['', ''], $actual);
+        $this->assertStringContainsString($flatten($expected), $flatten($actualContent));
+    }
+
     public function provideData(): Generator
     {
         yield 'context is an empty array' => [
             'context' => [],
-            'expected' => 'file-logger.WARNING: message [] []',
+            'expected' => '
+            {
+                "message": "message",
+                "context": {},
+                "level": 200,
+                "level_name": "INFO",
+                "channel": "file-logger",
+            ',
             'method' => 'warning',
         ];
 
@@ -87,7 +98,19 @@ final class LoggerFactoryTest extends TestCase
                     'nested-value' => 'as string'
                 ]
             ],
-            'expected' => 'file-logger.INFO: message {"field1":123.21,"field2":{"nested-value":"as string"}} []',
+            'expected' => '
+            {
+                "message": "message",
+                "context": {
+                    "field1": 123.21,
+                    "field2": {
+                        "nested-value": "as string"
+                    }
+                },
+                "level": 200,
+                "level_name": "INFO",
+                "channel": "file-logger",
+            ',
             'method' => 'info',
         ];
 
@@ -95,29 +118,32 @@ final class LoggerFactoryTest extends TestCase
             'context' => [
                 new Exception('Some message')
             ],
-            'expected' => 'file-logger.ERROR: message [{"message":"Some message","file"'
-                . ':"/app/tests/integration/File/LoggerFactoryTest.php","line',
+            'expected' => '
+            {
+            "message": "message",
+            "context": [
+                {
+                    "message": "Some message",
+                    "file": "/app/tests/integration/File/LoggerFactoryTest.php",
+                    "line": 115,
+                    "trace":
+            ',
             'method' => 'error',
         ];
     }
 
-    private function getLoggerFactory(): LoggerFactory
+    protected function tearDown(): void
     {
-        return new LoggerFactory(
-            new Config(
-                self::PATH
-            )
-        );
+        self::cleanUp();
+        parent::tearDown();
     }
 
-    private function getFileName(): string
+    private static function cleanUp(): void
     {
-        return sprintf('app-%s.txt', (new DateTime())->format('Y-m-d'));
-    }
+        $path = self::PATH;
 
-    private function assertValidOutput(string $expected): void
-    {
-        $actualContent = (string)file_get_contents(self::PATH . $this->getFileName());
-        $this->assertStringContainsString($expected, $actualContent);
+        if (file_exists($path)) {
+            system("rm -rf " . escapeshellarg($path));
+        }
     }
 }

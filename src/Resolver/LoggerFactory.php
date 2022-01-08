@@ -32,6 +32,17 @@ final class LoggerFactory implements FactoryInterface
         $this->local = $local;
     }
 
+    public static function createFrom(ContainerInterface $container): self
+    {
+        return new self(
+            new Environment($container->get('environment')),
+            $container->get(LoggerTypes::DEFAULT),
+            $container->get(LoggerTypes::NULL),
+            $container->get(LoggerTypes::EXTERNAL),
+            $container->get(LoggerTypes::LOCAL),
+        );
+    }
+
     public function create(): Logger
     {
         switch ($this->environment) {
@@ -46,16 +57,5 @@ final class LoggerFactory implements FactoryInterface
             default:
                 return $this->default->create();
         }
-    }
-
-    public static function createFrom(ContainerInterface $container): self
-    {
-        return new self(
-            new Environment($container->get('environment')),
-            $container->get(LoggerTypes::DEFAULT),
-            $container->get(LoggerTypes::NULL),
-            $container->get(LoggerTypes::EXTERNAL),
-            $container->get(LoggerTypes::LOCAL),
-        );
     }
 }
