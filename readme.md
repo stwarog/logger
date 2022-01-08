@@ -11,6 +11,11 @@ Most of the implementations depends on Monolog.
 This package wraps 3 types of Loggers. Each of them implements simple factory interface, to build concrete
 LoggerInterface (PSR-3) object with minimal setup.
 
+* https://efficio.atlassian.net/wiki/spaces/EN/pages/5683675166/Common+logging+interface+implementation+utils
+
+### Important conventions
+- **logging exception** should be done by passing context array with `exception` key!
+
 ## "External" (Sentry) logger
 **Monolog** wrapper that sends all logs to the external Sentry system.
 
@@ -57,10 +62,10 @@ $logger->info('custom message', [
 # Config is optional
 
 $config = [ # Default values
-    'path' => '{project_dir}/var/log/',
-    'file_name' => '{date}-app.txt',
-    'permission' => 0775,
-    'level' => LogLevel::DEBUG 
+    'path' => '{project_dir}/var/log/', # (mandatory)
+    'file_name' => '{date}-app.txt',    # (optional)
+    'permission' => 0775,               # (optional)
+    'level' => LogLevel::DEBUG          # (optional, DEBUG by default)
 ]
 
 $factory = new LoggerFactory($config);
@@ -101,26 +106,44 @@ $logger = $factory->create();
 This is another kind of logger that acts like a resolver. By provided environment name is able to
 determine what concrete logger should be used.
 
+### Verbosity
+
+| #  | Environment | Logger Type       | Log levels                                                      |
+|----|-------------|-------------------|-----------------------------------------------------------------|
+| 1. | production  | External (Sentry) | error, critical, alert, emergency                               |
+| 2. | staging     | External (Sentry) | error, critical, alert, emergency, warning                      |
+| 3. | sandbox     | External (Sentry) | error, critical, alert, emergency, warning                      |
+| 4. | development | Local (File)      | error, critical, alert, emergency, warning, notice, info, debug |
+| 5. | testing     | Null              |                                                                 |
+| 6. | any other   | Null              |                                                                 |
+
 ### Copy & Paste full example
 
 ```php
-use Efficio\Logger\{Environment, File, File\Config, NullObject, Resolver, Sentry};
-use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
-
-
 $container->nullLoggerFactory = fn(): LoggerFactory => new NullObject\LoggerFactory();
 
-$container->sentryLoggerFactory = fn(): LoggerFactory => new Sentry\LoggerFactory(
-    "getenv('SENTRY_DSN')",
-    ['level' => LogLevel::ERROR]
-);
+$container->sentryLoggerFactory = function () use ($container): LoggerFactory {
+    $sentryDsn = getenv('SENTRY_DSN');
+    $environment = getenv('ENVIRONMENT_NAME');
+
+    if ($sentryDsn) {
+        return new Sentry\LoggerFactory(
+            $sentryDsn,
+            [
+                'level' => LogLevel::ERROR,
+                'environment' => $environment
+            ]
+        );
+    }
+
+    return $container->nullLoggerFactory;
+};
 
 $container->fileLoggerFactory = fn(): LoggerFactory => new File\LoggerFactory(
     new Config(
         __DIR__ . '/../../var/logs/',
         'app.txt',
-        0777, # todo
+        0777,
         LogLevel::DEBUG,
     )
 );
@@ -129,11 +152,11 @@ $container->loggerFactory = function () use ($container) {
     $defaultLogger = $container->nullLoggerFactory;
 
     return new Resolver\LoggerFactory(
-        new LoggerEnvironment(getenv('ENVIRONMENT_NAME')),
-        $defaultLogger,                  # default
-        $container->nullLoggerFactory,   # null
-        $container->sentryLoggerFactory, # external 
-        $container->fileLoggerFactory    # local
+        new LoggerEnvironment((string)getenv('ENVIRONMENT_NAME')),
+        $defaultLogger,                    # default 
+        $container->nullLoggerFactory,     # null 
+        $container->sentryLoggerFactory,   # external 
+        $container->fileLoggerFactory      # local
     );
 };
 
