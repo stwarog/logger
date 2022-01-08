@@ -17,13 +17,21 @@ final class Normalization implements ProcessorInterface
     /** @inheritdoc */
     public function __invoke(array $record): array
     {
-        if (isset($record['context'])) {
-            $record['context'] = $this->normalize($record['context']);
+        $exception = null;
+
+        if (isset($record['context']['exception'])) {
+            $exception = $record['context']['exception'];
+            unset($record['context']['exception']);
         }
 
-        if (isset($record['extra'])) {
-            $record['extra'] = $this->normalize($record['extra']);
+        $record['context'] = $this->normalize($record['context']);
+
+        if ($exception) {
+            $record['context']['exception'] = $exception;
         }
+
+        $record['extra'] = $this->normalize($record['extra']);
+
 
         return $record;
     }

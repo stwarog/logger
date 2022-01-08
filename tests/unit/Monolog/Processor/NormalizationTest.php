@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Monolog\Processor;
 
 use Efficio\Logger\Monolog\Processor\Normalization;
+use Exception;
 use Monolog\Processor\ProcessorInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
@@ -51,12 +52,37 @@ final class NormalizationTest extends TestCase
                 ),
             'channel' => 'channel',
             'extra' =>
-                array(
+                [
                     0 => 431,
                     1 => 'abc',
-                )
+                ]
         );
 
         $this->assertSame($expected, $result);
+    }
+
+    public function testNormalizeShouldNotAffectExceptionContextKeyIfPresent(): void
+    {
+        // Given record with exception in
+        $exception = new Exception();
+        $sut = new Normalization();
+
+        $record = [
+            'message' => 'message',
+            'level' => LogLevel::ERROR,
+            'level_name' => LogLevel::ERROR,
+            'context' => [
+                'some-field' => 123,
+                'exception' => $exception,
+            ],
+            'channel' => 'channel',
+            'extra' => [],
+        ];
+
+        // When normalized
+        $actual = $sut($record);
+
+        // Then exception should not be affected
+        $this->assertSame($exception, $actual['context']['exception']);
     }
 }
