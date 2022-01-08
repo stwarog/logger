@@ -4,4 +4,4 @@ WORKDIR /var/www/html
 
 # Install project dependancies
 COPY composer.json composer.lock /var/www/html/
-RUN composer install -o --no-dev --no-interaction --no-progress --no-suggest
+RUN composer install -o --no-interaction --no-progress --no-suggest
