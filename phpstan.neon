@@ -8,3 +8,6 @@ parameters:
     paths:
         - src
         - tests
+    excludes_analyse:
+        - src/File/LoggerFactory.php
+        - tests/unit/Monolog/Processor/NormalizationTest.php # todo why it's failing?

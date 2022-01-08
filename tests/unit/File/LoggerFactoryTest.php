@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\File;
 
-use Efficio\Logger\Decorator;
 use Efficio\Logger\File\Config;
 use Efficio\Logger\File\ConfigInterface;
 use Efficio\Logger\File\LoggerFactory;
@@ -44,6 +43,5 @@ final class LoggerFactoryTest extends TestCase
 
         // Then newly created instance should be
         $this->assertInstanceOf(LoggerInterface::class, $actual);
-        $this->assertInstanceOf(Decorator::class, $actual);
     }
 }

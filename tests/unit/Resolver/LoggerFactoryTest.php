@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Resolver;
 
-use Efficio\Logger\Decorator;
 use Efficio\Logger\Environment;
 use Efficio\Logger\File\Config;
 use Efficio\Logger\File\LoggerFactory as FileFactory;
@@ -83,7 +82,7 @@ final class LoggerFactoryTest extends TestCase
         $expectedLoggerInstance[LoggerTypes::DEFAULT] = NullLogger::class;
         $expectedLoggerInstance[LoggerTypes::NULL] = NullLogger::class;
         $expectedLoggerInstance[LoggerTypes::EXTERNAL] = Logger::class;
-        $expectedLoggerInstance[LoggerTypes::LOCAL] = Decorator::class;
+        $expectedLoggerInstance[LoggerTypes::LOCAL] = LoggerInterface::class;
 
         $sut = new LoggerFactory(new Environment($environment), ...array_values($loggers));
 

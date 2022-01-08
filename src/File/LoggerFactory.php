@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Efficio\Logger\File;
 
 use DateTimeZone;
-use Efficio\Logger\Decorator;
 use Efficio\Logger\LoggerFactory as FactoryInterface;
+use Efficio\Logger\Monolog\Processor\Normalization;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
@@ -40,8 +40,13 @@ final class LoggerFactory implements FactoryInterface
 
     public function create(): LoggerInterface
     {
-        $logger = new Logger(self::LOGGER_NAME, $this->handlers, [], $this->timezone);
+        $logger = new Logger(
+            self::LOGGER_NAME,
+            $this->handlers,
+            [new Normalization()],
+            $this->timezone
+        );
 
-        return new Decorator($logger);
+        return $logger;
     }
 }
