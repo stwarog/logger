@@ -11,7 +11,6 @@ use Efficio\Logger\LoggerFactory as LoggerFactoryInterface;
 use Efficio\Logger\LoggerTypes;
 use Efficio\Logger\NullObject\LoggerFactory as NullObjectFactory;
 use Efficio\Logger\Resolver\LoggerFactory;
-use Efficio\Logger\Sentry\Logger;
 use Efficio\Logger\Sentry\LoggerFactory as SentryFactory;
 use Generator;
 use PHPUnit\Framework\TestCase;
@@ -81,7 +80,7 @@ final class LoggerFactoryTest extends TestCase
         // And expected concrete loggers
         $expectedLoggerInstance[LoggerTypes::DEFAULT] = NullLogger::class;
         $expectedLoggerInstance[LoggerTypes::NULL] = NullLogger::class;
-        $expectedLoggerInstance[LoggerTypes::EXTERNAL] = Logger::class;
+        $expectedLoggerInstance[LoggerTypes::EXTERNAL] = LoggerInterface::class;
         $expectedLoggerInstance[LoggerTypes::LOCAL] = LoggerInterface::class;
 
         $sut = new LoggerFactory(new Environment($environment), ...array_values($loggers));

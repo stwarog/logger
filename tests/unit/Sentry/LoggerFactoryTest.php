@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Sentry;
 
-use Efficio\Logger\Sentry\Logger;
 use Efficio\Logger\Sentry\LoggerFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -29,6 +28,5 @@ final class LoggerFactoryTest extends TestCase
 
         // Then newly created instance should be
         $this->assertInstanceOf(LoggerInterface::class, $actual);
-        $this->assertInstanceOf(Logger::class, $actual);
     }
 }

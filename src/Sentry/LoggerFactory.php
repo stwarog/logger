@@ -6,7 +6,7 @@ namespace Efficio\Logger\Sentry;
 
 use DateTimeZone;
 use Efficio\Logger\LoggerFactory as FactoryInterface;
-use Efficio\Logger\Sentry\Logger as Decorator;
+use Efficio\Logger\Monolog\Processor\Normalization;
 use Monolog\Logger as MonologLogger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -31,7 +31,7 @@ final class LoggerFactory implements FactoryInterface
 
     public function create(): LoggerInterface
     {
-        $monolog = new MonologLogger(self::LOGGER_NAME, [], [], $this->timezone);
+        $monolog = new MonologLogger(self::LOGGER_NAME, [], [new Normalization()], $this->timezone);
 
         $level = $this->config['level'] ?? LogLevel::ERROR;
 
@@ -49,6 +49,6 @@ final class LoggerFactory implements FactoryInterface
 
         $monolog->pushHandler($handler);
 
-        return new Decorator($monolog);
+        return $monolog;
     }
 }
