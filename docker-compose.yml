@@ -1,9 +1,10 @@
-version: '3'
+version: '3.7'
+
 services:
-  composer:
-    container_name: efficio-logger
-    image: composer:2.0.10
-    environment:
-      - COMPOSER_CACHE_DIR=/app/.cache/composer
+  lib:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     volumes:
-      - .:/app
+      - ~/.cache/composer:/root/.cache/composer
+      - ./:/var/www/html/
