@@ -6,7 +6,6 @@ namespace Efficio\Logger\Sentry;
 
 use DateTimeZone;
 use Efficio\Logger\LoggerFactory as FactoryInterface;
-use Efficio\Logger\Monolog\Processor\Normalization;
 use Monolog\Logger as MonologLogger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;

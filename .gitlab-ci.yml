@@ -25,5 +25,6 @@ unit_tests:
     - composer efficio:cs
     - composer efficio:phpstan
     - composer tests:unit
+    - composer tests:integration
   after_script:
     - echo "Done!"

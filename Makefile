@@ -1,6 +1,6 @@
 start: stop build check
 
-check: lint cs stan unit
+check: lint cs stan unit integration
 
 unit:
 	docker-compose run --rm lib composer tests:unit

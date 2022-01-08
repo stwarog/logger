@@ -12,3 +12,4 @@ parameters:
         - src/File/LoggerFactory.php
         - src/Sentry/LoggerFactory.php
         - tests/unit/Monolog/Processor/NormalizationTest.php
+        - tests/unit/Sentry/NormalizationTest.php
