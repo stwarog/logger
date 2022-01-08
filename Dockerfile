@@ -3,5 +3,5 @@ FROM registry.gitlab.com/efficio1/engineering/docker/efficio-docker-image/effici
 WORKDIR /var/www/html
 
 # Install project dependancies
-COPY composer.json /var/www/html/
+COPY composer.json composer.lock /var/www/html/
 RUN composer install -o --no-dev --no-interaction --no-progress --no-suggest
