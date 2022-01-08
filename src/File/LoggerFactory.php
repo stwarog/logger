@@ -7,9 +7,12 @@ namespace Efficio\Logger\File;
 use DateTimeZone;
 use Efficio\Logger\LoggerFactory as FactoryInterface;
 use Efficio\Logger\Monolog\Processor\Normalization;
-use Monolog\Handler\HandlerInterface;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
+
+use const DIRECTORY_SEPARATOR;
 
 final class LoggerFactory implements FactoryInterface
 {
@@ -17,36 +20,47 @@ final class LoggerFactory implements FactoryInterface
 
     private ConfigInterface $config;
 
-    /** @var HandlerInterface[] */
-    private array $handlers;
-
     private ?DateTimeZone $timezone;
 
     /**
      * @param ConfigInterface|array $config
-     * @param HandlerFactory|null $handlerFactory
      * @param DateTimeZone|null $timezone
      */
     public function __construct(
         $config,
-        ?HandlerFactory $handlerFactory = null,
         ?DateTimeZone $timezone = null
     ) {
         $this->config = is_array($config) ? Config::fromArray($config) : $config;
         $this->timezone = $timezone;
-        $defaultHandlerFactory = new DefaultHandlerFactory($this->config);
-        $this->handlers = $handlerFactory ? $handlerFactory->create() : $defaultHandlerFactory->create();
     }
 
     public function create(): LoggerInterface
     {
-        $logger = new Logger(
+        return new Logger(
             self::LOGGER_NAME,
-            $this->handlers,
+            $this->createHandlers(),
             [new Normalization()],
             $this->timezone
         );
+    }
 
-        return $logger;
+    private function createHandlers(): array
+    {
+        $c = $this->config;
+
+        $rotatingFileHandler = new RotatingFileHandler(
+            $c->getPath() . DIRECTORY_SEPARATOR . $c->getFileName(),
+            0,
+            /** @phpstan-ignore-next-line */
+            $c->getLevel(),
+            true,
+            $c->getFilePermission()
+        );
+
+        $rotatingFileHandler->setFormatter(
+            new LineFormatter()
+        );
+
+        return [$rotatingFileHandler];
     }
 }

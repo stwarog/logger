@@ -10,10 +10,7 @@ use Throwable;
 final class ExceptionNormalizer implements NormalizerInterface
 {
     /**
-     * @param Throwable|mixed $object
-     * @param string|null $format
-     * @param array $context
-     * @return array
+     * @inheritdoc
      */
     public function normalize($object, string $format = null, array $context = [])
     {

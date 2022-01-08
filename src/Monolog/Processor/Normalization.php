@@ -7,6 +7,11 @@ namespace Efficio\Logger\Monolog\Processor;
 use Efficio\Logger\Normalizer\Factory;
 use Monolog\Processor\ProcessorInterface;
 
+/**
+ * Class Normalization
+ * This is Monolog Processor implementation, that provides our normalization from Normalizer/Factory.
+ * It should be used by all Monolog loggers in our project to have consistent mapping.
+ */
 final class Normalization implements ProcessorInterface
 {
     /** @inheritdoc */

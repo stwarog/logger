@@ -30,6 +30,7 @@ final class ExceptionNormalizerTest extends TestCase
         $exception = new Exception('some message');
 
         // When normalized
+        /** @var array $actual */
         $actual = $sut->normalize($exception);
 
         // Then it should be as expected
