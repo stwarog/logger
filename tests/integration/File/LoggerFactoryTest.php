@@ -122,9 +122,6 @@ final class LoggerFactoryTest extends TestCase
                 "context": [
                     {
                         "message": "Some message",
-                        "file": "/var/www/html/tests/integration/File/LoggerFactoryTest.php",
-                        "line": 118,
-                        "trace": [
             ',
             'method' => 'error',
         ];
